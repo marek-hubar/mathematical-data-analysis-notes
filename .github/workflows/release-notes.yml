@@ -1,0 +1,37 @@
+name: Compile and Release Notes
+
+on:
+  push:
+    branches: [ main ]
+    # Optional: only trigger if Typst files actually change
+    paths:
+      - '**.typ'
+      - '**.bib'
+      - '.github/workflows/release-notes.yml'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Required to create/update releases and upload assets
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Typst
+        uses: typst-community/setup-typst@v3
+
+      - name: Compile Typst document
+        # Change 'main.typ' to whatever your root file is named
+        run: typst compile main.typ mathematical-data-analysis-notes.pdf
+
+      - name: Update Latest Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "mathematical-data-analysis-notes.pdf"
+          tag: "latest"
+          name: "Latest Mathematical Data Analysis Notes"
+          body: "Automatically compiled latest version of the notes from the `main` branch."
+          allowUpdates: true
+          replacesArtifacts: true
+          token: ${{ secrets.GITHUB_TOKEN }}
