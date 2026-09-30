@@ -1,11 +1,77 @@
 // Shared setup for the lecture notes.
 // Every chapter file starts with `#import "/template.typ": *`, which provides the theorem
-// environments (theorion), the notation helpers (moremath + the macros below), and cetz for figures.
+// environments (theorion), the notation helpers (defined below), and cetz for figures.
 
 #import "@preview/theorion:0.6.0": *
-#import "@local/moremath:0.1.0": *
 #import "@preview/cetz:0.4.2"
 #import "@preview/cetz-plot:0.1.3": plot
+
+// ---------------------------------------------------------------------------
+// General math helpers (formerly the `moremath` package)
+// ---------------------------------------------------------------------------
+
+// Slightly enlarged delimiters: `big((x - y) - (y - z))` makes the outer parentheses a bit bigger.
+#let big(x) = math.lr(x, size: 150%)
+#let bigp(x) = big($(#x)$)
+
+// Number a single equation.
+#let numbered(x) = {
+  set math.equation(numbering: "(1)")
+  x
+}
+
+// Calligraphic capitals: `aa` = 𝓐, `bb` = 𝓑, ... (no `oo`, which stays ∞).
+#let aa = $cal(A)$
+#let bb = $cal(B)$
+#let cc = $cal(C)$
+#let dd = $cal(D)$
+#let ee = $cal(E)$
+#let ff = $cal(F)$
+#let gg = $cal(G)$
+#let hh = $cal(H)$
+#let ii = $cal(I)$
+#let jj = $cal(J)$
+#let kk = $cal(K)$
+#let ll = $cal(L)$
+#let mm = $cal(M)$
+#let nn = $cal(N)$
+#let pp = $cal(P)$
+#let qq = $cal(Q)$
+#let rr = $cal(R)$
+#let ss = $cal(S)$
+#let tt = $cal(T)$
+#let uu = $cal(U)$
+#let vv = $cal(V)$
+#let ww = $cal(W)$
+#let xx = $cal(X)$
+#let yy = $cal(Y)$
+#let zz = $cal(Z)$
+
+// Probability theory
+#let indep = $perp #h(-1em) perp$ // independence relation
+#let nindep = $cancel(indep)$ // non-independence relation
+#let Pr = math.op("Pr")
+#let Ex = math.op("Ex")
+#let Var = math.op("Var")
+#let Cov = math.op("Cov")
+#let ind = math.bb($1$) // indicator
+#let iid = math.upright("iid")
+
+// Miscellaneous operators
+#let sign = math.op("sign")
+#let argmin = math.op("arg min", limits: true)
+#let argmax = math.op("arg max", limits: true)
+
+// Analysis
+#let dist = math.upright("d") // metric
+#let deriv = math.upright("D") // general derivative operator
+
+// Landau notation
+#let oh = $cal(o)$
+#let Oh = $cal(O)$
+#let ohmega = $cal(omega)$
+#let Ohmega = $cal(Omega)$
+#let Thetah = $cal(Theta)$
 
 // ---------------------------------------------------------------------------
 // Notation macros (use these instead of ad-hoc spellings; see WRITING_GUIDE.md)
