@@ -190,6 +190,21 @@
       let loc = el.location()
       let word = if appendix-state.at(loc) [Appendix] else [Chapter]
       link(loc, [#word~#numbering(el.numbering, ..counter(heading).at(loc).slice(0, 1))])
+    } else if el != none and el.numbering != none and (
+      el.func() == math.equation or (el.func() == figure and el.kind in (image, table))
+    ) {
+      // The chapter-prefixed numberings read the heading counter where they are displayed,
+      // which for a reference is the citing chapter. Resolve the number at the target instead.
+      let loc = el.location()
+      let h = counter(heading).at(loc).first()
+      let chap = if appendix-state.at(loc) { numbering("A", h) } else { str(h) }
+      let num = if el.func() == math.equation {
+        "(" + chap + "." + str(counter(math.equation).at(loc).first()) + ")"
+      } else {
+        chap + "." + str(counter(figure.where(kind: el.kind)).at(loc).first())
+      }
+      let supp = if it.supplement == auto { el.supplement } else { it.supplement }
+      link(loc, if supp in (none, []) { num } else [#supp~#num])
     } else { it }
   }
 
